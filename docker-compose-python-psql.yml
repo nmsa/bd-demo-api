@@ -1,0 +1,29 @@
+# 
+# Bases de Dados 2020/2021
+# Trabalho Prático
+#
+# Authors: 
+#   Nuno Antunes <nmsa@dei.uc.pt>
+#   BD 2021 Team - https://dei.uc.pt/lei/
+#   University of Coimbra
+version: '3'
+
+services:
+  db:
+    build: ./postgresql
+    container_name: db
+    expose:
+      - "5432"
+    ports:
+      - "5432:5432"
+  web:
+    build: ./python
+    container_name: api
+    volumes:
+      - "./python/app:/app"
+    expose:
+      - "5000"
+    ports:
+      - "8080:5000"
+    depends_on:
+      - db
