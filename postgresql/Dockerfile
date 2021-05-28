@@ -7,13 +7,20 @@
 #   BD 2021 Team - https://dei.uc.pt/lei/
 #   University of Coimbra
 
-FROM library/postgres
+FROM library/postgres:13
 
 
-ENV POSTGRES_USER aulaspl
-ENV POSTGRES_PASSWORD aulaspl
-ENV POSTGRES_DB dbfichas
+RUN apt update  &&  apt -y install postgresql-13-cron
 
-COPY BD2021_data.sql /docker-entrypoint-initdb.d/
+
+ENV POSTGRES_USER       aulaspl
+ENV POSTGRES_PASSWORD   aulaspl
+ENV POSTGRES_DB         dbfichas
+
+
+
+# COPY order is not relevant, files loaded by alphabetical order
+COPY BD2021_data.sql        /docker-entrypoint-initdb.d/
+COPY ./initdb-pg_cron.sh    /docker-entrypoint-initdb.d/pg_cron.sh
 
 EXPOSE 5432
