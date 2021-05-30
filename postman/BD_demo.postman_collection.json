@@ -6,19 +6,19 @@
 	},
 	"item": [
 		{
-			"name": "Obtain All Departments",
+			"name": "Obtain All Auctions",
 			"request": {
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:8080/departments/",
+					"raw": "http://localhost:8080/Auctions/",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
 					"port": "8080",
 					"path": [
-						"departments",
+						"auction",
 						""
 					]
 				}

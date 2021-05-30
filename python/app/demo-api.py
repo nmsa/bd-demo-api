@@ -10,20 +10,20 @@
 ## =========== University of Coimbra ===========
 ## =============================================
 ##
-## Authors: 
+## Authors:
 ##   Nuno Antunes <nmsa@dei.uc.pt>
 ##   BD 2021 Team - https://dei.uc.pt/lei/
 ##   University of Coimbra
 
- 
+
 from flask import Flask, jsonify, request
 import logging, psycopg2, time
 
-app = Flask(__name__) 
+app = Flask(__name__)
 
 
-@app.route('/') 
-def hello(): 
+@app.route('/')
+def hello():
     return """
 
     Hello World!  <br/>
@@ -42,26 +42,26 @@ def hello():
 ##
 ## Obtain all departments, in JSON format
 ##
-## To use it, access: 
-## 
+## To use it, access:
+##
 ##   http://localhost:8080/departments/
 ##
 
-@app.route("/departments/", methods=['GET'], strict_slashes=True)
-def get_all_departments():
-    logger.info("###              DEMO: GET /departments              ###");   
+@app.route("/Auctions/", methods=['GET'], strict_slashes=True)
+def get_all_auctions():
+    logger.info("###              DEMO: GET /auctions              ###");
 
     conn = db_connection()
     cur = conn.cursor()
 
-    cur.execute("SELECT ndep, nome, local FROM dep")
+    cur.execute("SELECT idcode,minimumprice,end_time,title,description,person_userid FROM auction")
     rows = cur.fetchall()
 
     payload = []
-    logger.debug("---- departments  ----")
+    logger.debug("---- Auctions  ----")
     for row in rows:
         logger.debug(row)
-        content = {'ndep': int(row[0]), 'nome': row[1], 'localidade': row[2]}
+        content = {'idcode': int(row[0]), 'minimunPrice': row[1], 'Title': row[3]}
         payload.append(content) # appending to the payload to be returned
 
     conn.close()
@@ -74,14 +74,14 @@ def get_all_departments():
 ##
 ## Obtain department with ndep <ndep>
 ##
-## To use it, access: 
-## 
+## To use it, access:
+##
 ##   http://localhost:8080/departments/10
 ##
 
 @app.route("/departments/<ndep>", methods=['GET'])
 def get_department(ndep):
-    logger.info("###              DEMO: GET /departments/<ndep>              ###");   
+    logger.info("###              DEMO: GET /departments/<ndep>              ###");
 
     logger.debug(f'ndep: {ndep}')
 
@@ -107,7 +107,7 @@ def get_department(ndep):
 ##
 ## Add a new department in a JSON payload
 ##
-## To use it, you need to use postman or curl: 
+## To use it, you need to use postman or curl:
 ##
 ##   curl -X POST http://localhost:8080/departments/ -H "Content-Type: application/json" -d '{"localidade": "Polo II", "ndep": 69, "nome": "Seguranca"}'
 ##
@@ -115,7 +115,7 @@ def get_department(ndep):
 
 @app.route("/departments/", methods=['POST'])
 def add_departments():
-    logger.info("###              DEMO: POST /departments              ###");   
+    logger.info("###              DEMO: POST /departments              ###");
     payload = request.get_json()
 
     conn = db_connection()
@@ -126,7 +126,7 @@ def add_departments():
 
     # parameterized queries, good for security and performance
     statement = """
-                  INSERT INTO dep (ndep, nome, local) 
+                  INSERT INTO dep (ndep, nome, local)
                           VALUES ( %s,   %s ,   %s )"""
 
     values = (payload["ndep"], payload["localidade"], payload["nome"])
@@ -152,14 +152,14 @@ def add_departments():
 ##
 ## Update a department based on the a JSON payload
 ##
-## To use it, you need to use postman or curl: 
+## To use it, you need to use postman or curl:
 ##
 ##   curl -X PUT http://localhost:8080/departments/ -H "Content-Type: application/json" -d '{"ndep": 69, "localidade": "Porto"}'
 ##
 
 @app.route("/departments/", methods=['PUT'])
 def update_departments():
-    logger.info("###              DEMO: PUT /departments              ###");   
+    logger.info("###              DEMO: PUT /departments              ###");
     content = request.get_json()
 
     conn = db_connection()
@@ -178,7 +178,7 @@ def update_departments():
 
     # parameterized queries, good for security and performance
     statement ="""
-                UPDATE dep 
+                UPDATE dep
                   SET local = %s
                 WHERE ndep = %s"""
 
@@ -239,13 +239,10 @@ if __name__ == "__main__":
     time.sleep(1) # just to let the DB start before this print :-)
 
 
-    logger.info("\n---------------------------------------------------------------\n" + 
+    logger.info("\n---------------------------------------------------------------\n" +
                   "API v1.0 online: http://localhost:8080/departments/\n\n")
 
 
-    
+
 
     app.run(host="0.0.0.0", debug=True, threaded=True)
-
-
-
