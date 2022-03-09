@@ -16,7 +16,11 @@ WORKDIR /mvn-spring-boot
 RUN mvn clean package
 
 
-CMD ["/mvn-spring-boot/docker.sh"]
+CMD ["sh", "/mvn-spring-boot/docker.sh"]
+
+# CMD ["/mvn-spring-boot/docker.sh"]
+
+
 
 
 
