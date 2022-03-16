@@ -1,11 +1,11 @@
 #!/bin/bash
-# 
-# Bases de Dados 2020/2021
+#
+# Bases de Dados 2021/2022
 # Trabalho Prático
 #
-# Authors: 
+# Authors:
 #   Nuno Antunes <nmsa@dei.uc.pt>
-#   BD 2021 Team - https://dei.uc.pt/lei/
+#   BD 2022 Team - https://dei.uc.pt/lei/
 #   University of Coimbra
 
 image="bd-psql"

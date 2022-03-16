@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "6991f472-7acb-45e0-a14e-c47ca0c38685",
+		"_postman_id": "7a699b4d-77ee-4fc4-ae23-16d2ec433ce0",
 		"name": "BD_demo",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -81,7 +81,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"ndep\": 69,\n    \"localidade\": \"Figueira da Foz\"\n}",
+					"raw": "{\n    \"localidade\": \"Figueira da Foz\"\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -89,7 +89,7 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:8080/departments/",
+					"raw": "http://localhost:8080/departments/69",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -97,7 +97,7 @@
 					"port": "8080",
 					"path": [
 						"departments",
-						""
+						"69"
 					]
 				}
 			},

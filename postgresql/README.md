@@ -10,8 +10,8 @@ This code is to be used in the scope of the _BD_ course.
 
 ## Development
 
-Use only if you need to have database running in separate. 
-The executables in the root are preparared to start the database and connect it with Web Application.
+Use only if you need to have database running in separate.
+The executables in the root are prepared to start the database and connect it with Web Application.
 
 It could be useful to have it running in separate for the Java example, where it is not possible for you to change code being executed by Docker and access does changes without starting docker components again.
 
@@ -47,6 +47,5 @@ sh stop.sh
 
 ## Authors
 
-* BD 2021 Team - https://dei.uc.pt/lei/
+* BD 2022 Team - https://dei.uc.pt/lei/
 * University of Coimbra
-

@@ -10,14 +10,16 @@
 ## =========== University of Coimbra ===========
 ## =============================================
 ##
-## Authors: 
+## Authors:
 ##   Nuno Antunes <nmsa@dei.uc.pt>
 ##   BD 2022 Team - https://dei.uc.pt/lei/
 ##   University of Coimbra
 
- 
+
 import flask
-import logging, psycopg2, time
+import logging
+import psycopg2
+import time
 
 app = flask.Flask(__name__)
 
@@ -33,16 +35,14 @@ StatusCodes = {
 
 def db_connection():
     db = psycopg2.connect(
-        user = "aulaspl",
-        password = "aulaspl",
-        host = "db",
-        port = "5432",
-        database = "dbfichas"
+        user='aulaspl',
+        password='aulaspl',
+        host='127.0.0.1',
+        port='5432',
+        database='dbfichas'
     )
-    
+
     return db
-
-
 
 
 
@@ -52,11 +52,11 @@ def db_connection():
 ##########################################################
 
 
-@app.route('/')
+@app.route('/') 
 def landing_page():
     return """
 
-    Hello World (Python)!  <br/>
+    Hello World (Python Native)!  <br/>
     <br/>
     Check the sources for instructions on how to use the endpoints!<br/>
     <br/>
@@ -69,8 +69,8 @@ def landing_page():
 ##
 ## Obtain all departments in JSON format
 ##
-## To use it, access:
-##
+## To use it, access: 
+## 
 ## http://localhost:8080/departments/
 ##
 
@@ -110,8 +110,8 @@ def get_all_departments():
 ##
 ## Obtain department with ndep <ndep>
 ##
-## To use it, access:
-##
+## To use it, access: 
+## 
 ## http://localhost:8080/departments/10
 ##
 
@@ -152,7 +152,7 @@ def get_department(ndep):
 ##
 ## Add a new department in a JSON payload
 ##
-## To use it, you need to use postman or curl:
+## To use it, you need to use postman or curl: 
 ##
 ## curl -X POST http://localhost:8080/departments/ -H 'Content-Type: application/json' -d '{'localidade': 'Polo II', 'ndep': 69, 'nome': 'Seguranca'}'
 ##
@@ -202,7 +202,7 @@ def add_departments():
 ##
 ## Update a department based on a JSON payload
 ##
-## To use it, you need to use postman or curl:
+## To use it, you need to use postman or curl: 
 ##
 ## curl -X PUT http://localhost:8080/departments/ -H 'Content-Type: application/json' -d '{'ndep': 69, 'localidade': 'Porto'}'
 ##
@@ -247,16 +247,10 @@ def update_departments(ndep):
     return flask.jsonify(response)
 
 
-
-
-
-##########################################################
-## MAIN
-##########################################################
-if __name__ == "__main__":
-
-    # Set up the logging
-    logging.basicConfig(filename="logs/log_file.log")
+if __name__ == '__main__':
+    
+    # set up logging
+    logging.basicConfig(filename='log_file.log')
     logger = logging.getLogger('logger')
     logger.setLevel(logging.DEBUG)
     ch = logging.StreamHandler()
@@ -267,12 +261,7 @@ if __name__ == "__main__":
     ch.setFormatter(formatter)
     logger.addHandler(ch)
 
-    time.sleep(1) # just to let the DB start before this print :-)
-
-    logger.info("\n---------------------------------------------------------------\n" + 
-                  "API v1.0 online: http://localhost:8080/departments/\n\n")
-
-    app.run(host="0.0.0.0", debug=True, threaded=True)
-
-
-
+    host = '127.0.0.1'
+    port = 8080
+    app.run(host=host, debug=True, threaded=True, port=port)
+    logger.info(f'API v1.0 online: http://{host}:{port}')
