@@ -45,15 +45,21 @@ public class BDDemo {
         API_ERROR ("api_error", 400),
         INTERNAL_ERROR ("internal_error", 500);
     
-        private final String description;   // in kilograms
-        private final int code; // in meters
+        private final String description; 
+        private final int code; 
         
         StatusCode(String description, int code) {
             this.description = description;
             this.code = code;
         }
-        private String description() { return description; }
-        private int code() { return code; }
+        
+        private String description() { 
+            return description; 
+        }
+
+        private int code() { 
+            return code; 
+        }
     }
 
 
