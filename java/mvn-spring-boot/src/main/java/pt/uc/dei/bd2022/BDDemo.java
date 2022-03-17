@@ -1,7 +1,7 @@
 /** **
  * =============================================
  * ============== Bases de Dados ===============
- * ============== LEI  2020/2021 ===============
+ * ============== LEI  2021/2022 ===============
  * =============================================
  * =================== Demo ====================
  * =============================================
@@ -11,11 +11,11 @@
  * =============================================
  * <p>
  *
- * Authors: 
+ * Authors:
  *   Nuno Antunes <nmsa@dei.uc.pt>
- *   BD 2021 Team - https://dei.uc.pt/lei/
+ *   BD 2022 Team - https://dei.uc.pt/lei/
  */
-package pt.uc.dei.bd2021;
+package pt.uc.dei.bd2022;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -39,15 +39,39 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class BDDemo {
 
+    public enum StatusCode {
+
+        SUCCESS ("success", 200),
+        API_ERROR ("api_error", 400),
+        INTERNAL_ERROR ("internal_error", 500);
+    
+        private final String description; 
+        private final int code; 
+        
+        StatusCode(String description, int code) {
+            this.description = description;
+            this.code = code;
+        }
+        
+        private String description() { 
+            return description; 
+        }
+
+        private int code() { 
+            return code; 
+        }
+    }
+
+
     private static final Logger logger = LoggerFactory.getLogger(BDDemo.class);
 
     @GetMapping("/")
     public String landing() {
-        return "Hello World!  <br/>\n"
+        return "Hello World (Java)!  <br/>\n"
                 + "<br/>\n"
                 + "Check the sources for instructions on how to use the endpoints!<br/>\n"
                 + "<br/>\n"
-                + "BD 2021 Team<br/>\n"
+                + "BD 2022 Team<br/>\n"
                 + "<br/>";
     }
 
@@ -65,10 +89,11 @@ public class BDDemo {
      */
     @GetMapping(value = "/departments/", produces = "application/json")
     @ResponseBody
-    public List<Map<String, Object>> getAllDepartments() {
+    public Map<String, Object> getAllDepartments() {
         logger.info("###              DEMO: GET /departments              ###");
         Connection conn = RestServiceApplication.getConnection();
-        List<Map<String, Object>> payload = new ArrayList<>();
+        Map<String, Object> returnData = new HashMap<String, Object>();
+        List<Map<String, Object>> results = new ArrayList<>();
 
         try (Statement stmt = conn.createStatement()) {
             ResultSet rows = stmt.executeQuery("SELECT ndep, nome, local FROM dep");
@@ -81,12 +106,18 @@ public class BDDemo {
                 content.put("ndep", rows.getInt("ndep"));
                 content.put("nome", rows.getString("nome"));
                 content.put("localidade", rows.getString("local"));
-                payload.add(content);
+                results.add(content);
             }
+
+            returnData.put("status", StatusCode.SUCCESS.code());
+            returnData.put("results", results);
+
         } catch (SQLException ex) {
             logger.error("Error in DB", ex);
+            returnData.put("status", StatusCode.INTERNAL_ERROR.code());
+            returnData.put("errors", ex.getMessage());
         }
-        return payload;
+        return returnData;
     }
 
     /**
@@ -110,6 +141,8 @@ public class BDDemo {
         logger.info("###              DEMO: GET /departments              ###");
         Connection conn = RestServiceApplication.getConnection();
 
+        Map<String, Object> returnData = new HashMap<String, Object>();
+
         Map<String, Object> content = new HashMap<>();
         try (PreparedStatement ps = conn.prepareStatement("SELECT ndep, nome, local FROM dep WHERE ndep = ?")) {
             ps.setInt(1, ndep);
@@ -121,10 +154,16 @@ public class BDDemo {
                 content.put("nome", rows.getString("nome"));
                 content.put("localidade", rows.getString("local"));
             }
+
+            returnData.put("status", StatusCode.SUCCESS.code());
+            returnData.put("results", content);
+
         } catch (SQLException ex) {
             logger.error("Error in DB", ex);
+            returnData.put("status", StatusCode.INTERNAL_ERROR.code());
+            returnData.put("errors", ex.getMessage());
         }
-        return content; // returns empty if error or none selected
+        return returnData;
     }
 
     /**
@@ -142,7 +181,7 @@ public class BDDemo {
      */
     @PostMapping(value = "/departments/", consumes = "application/json")
     @ResponseBody
-    public String createDepartment(
+    public Map<String, Object> createDepartment(
             @RequestBody Map<String, Object> payload
     ) {
 
@@ -152,7 +191,16 @@ public class BDDemo {
         logger.debug("---- new department  ----");
         logger.debug("payload: {}", payload);
 
-        Map<String, Object> content = new HashMap<>();
+        Map<String, Object> returnData = new HashMap<String, Object>();
+
+        // validate all the required inputs and types, e.g.,
+        if (!payload.containsKey("localidade")) {
+            logger.warn("localidade are required to update");
+            returnData.put("status", StatusCode.API_ERROR.code());
+            returnData.put("errors", "localidade are required to update");
+            return returnData;
+        }
+
         try (PreparedStatement ps = conn.prepareStatement(""
                 + "INSERT INTO dep (ndep, nome, local) "
                 + "         VALUES (  ? ,   ? ,    ? )")) {
@@ -161,9 +209,10 @@ public class BDDemo {
             ps.setString(3, (String) payload.get("localidade"));
             int affectedRows = ps.executeUpdate();
             conn.commit();
-            if (affectedRows == 1) {
-                return "Inserted!";
-            }
+
+            returnData.put("status", StatusCode.SUCCESS.code());
+            returnData.put("results", "Department inserted successfully");
+
         } catch (SQLException ex) {
             logger.error("Error in DB", ex);
             try {
@@ -171,6 +220,10 @@ public class BDDemo {
             } catch (SQLException ex1) {
                 logger.warn("Couldn't rollback", ex);
             }
+
+            returnData.put("status", StatusCode.INTERNAL_ERROR.code());
+            returnData.put("errors", ex.getMessage());
+
         } finally {
             try {
                 conn.close();
@@ -178,7 +231,7 @@ public class BDDemo {
                 logger.error("Error in DB", ex);
             }
         }
-        return "Failed";
+        return returnData;
     }
 
     /**
@@ -192,38 +245,43 @@ public class BDDemo {
      * {@code curl -X PUT http://localhost:8080/departments/ -H "Content-Type: application/json" -d '{"ndep": 69, "localidade": "Porto"}'}
      *
      */
-    @PutMapping(value = "/departments/", consumes = "application/json")
+    @PutMapping(value = "/departments/{ndep}", consumes = "application/json")
     @ResponseBody
-    public String updateDepartment(
+    public Map<String, Object> updateDepartment(
+            @PathVariable("ndep") int ndep,
             @RequestBody Map<String, Object> payload
     ) {
 
         logger.info("###              DEMO: PUT /departments               ###");
 
-        if (!payload.containsKey("ndep") || !payload.containsKey("localidade")) {
-            logger.warn("ndep and localidade are required to update");
-            return "ndep and localidade are required to update";
+        Map<String, Object> returnData = new HashMap<String, Object>();
+
+        // validate all the required inputs and types, e.g.,
+        if (!payload.containsKey("localidade")) {
+            logger.warn("localidade are required to update");
+            returnData.put("status", StatusCode.API_ERROR.code());
+            returnData.put("errors", "localidade are required to update");
+            return returnData;
         }
 
         logger.info("---- update department  ----");
         logger.debug("content: {}", payload);
         Connection conn = RestServiceApplication.getConnection();
-        if (conn == null) {
-            return "DB Problem!";
-        }
 
-        Map<String, Object> content = new HashMap<>();
         try (PreparedStatement ps = conn.prepareStatement(""
                 + "UPDATE dep"
                 + "   SET local = ? "
                 + " WHERE ndep = ?")) {
 
             ps.setString(1, (String) payload.get("localidade"));
-            ps.setInt(2, (int) payload.get("ndep"));
+            ps.setInt(2, ndep);
 
             int affectedRows = ps.executeUpdate();
             conn.commit();
-            return "Updated: " + affectedRows;
+
+            returnData.put("status", StatusCode.SUCCESS.code());
+            returnData.put("results", "Department updated successfully");
+
         } catch (SQLException ex) {
             logger.error("Error in DB", ex);
             try {
@@ -231,6 +289,9 @@ public class BDDemo {
             } catch (SQLException ex1) {
                 logger.warn("Couldn't rollback", ex);
             }
+
+            returnData.put("status", StatusCode.INTERNAL_ERROR.code());
+            returnData.put("errors", ex.getMessage());
         } finally {
             try {
                 conn.close();
@@ -238,6 +299,6 @@ public class BDDemo {
                 logger.error("Error in DB", ex);
             }
         }
-        return "Failed";
+        return returnData;
     }
 }

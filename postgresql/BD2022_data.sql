@@ -1,17 +1,17 @@
-/* 
-	# 
-	# Bases de Dados 2020/2021
+/*
+	#
+	# Bases de Dados 2021/2022
 	# Trabalho Prático
 	#
 */
 
 
-/* 
+/*
    Fazer copy-paste deste ficheiro
    para o Editor SQL e executar.
 */
 
-/* 
+/*
 Estes dois comandos drop (comentados) permitem remover as tabelas emp e dep da base de dados (se ja' tiverem sido criadas anteriormente)
 
 drop table emp;
@@ -58,7 +58,7 @@ ALTER TABLE emp ADD CONSTRAINT emp_fk2 FOREIGN KEY (ndep) REFERENCES dep(ndep);
 
 
 
-/* 
+/*
    Fazer copy-paste deste ficheiro
    para o SQL Editor do PgAdmin e executar (F5).
 */
@@ -75,12 +75,12 @@ INSERT INTO dep VALUES (40, 'Planeamento',   'Montemor');
 /* Insere os empregrados
  * Note-se  que  como  existe a  restricao  de  o  numero
  * do encarregado ser uma chave estrangeira (que por acaso
- * aponta  para a  chave primaria  da  mesma  tabela)  os 
+ * aponta  para a  chave primaria  da  mesma  tabela)  os
  * empregados  teem  que  ser  inseridos na  ordem certa.
  * Primeiro o presidente (que nao tem superiores)  depois
  * os empregados cujo encarregado e' o presidente e assim
  * sucessivamente.
- * 
+ *
  */
 INSERT INTO emp VALUES(1839, 'Jorge Sampaio',  'Presidente'  ,NULL, '1984-02-11', 890000,  NULL, 10);
 
@@ -110,5 +110,3 @@ INSERT INTO descontos VALUES (2, 100000, 210000);
 INSERT INTO descontos VALUES (3, 210001, 350000);
 INSERT INTO descontos VALUES (4, 350001, 550000);
 INSERT INTO descontos VALUES (5, 550001, 9999999);
-
-

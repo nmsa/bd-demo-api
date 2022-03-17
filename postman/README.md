@@ -7,5 +7,5 @@ Example requests to be imported with [`postman`](postman.com).
 
 ## Authors
 
-* BD 2021 Team - https://dei.uc.pt/lei/
+* BD 2022 Team - https://dei.uc.pt/lei/
 * University of Coimbra

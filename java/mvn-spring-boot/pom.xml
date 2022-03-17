@@ -12,7 +12,7 @@
     </parent>
 
 
-    <groupId>pt.uc.dei.bd2021</groupId>
+    <groupId>pt.uc.dei.bd2022</groupId>
     <artifactId>mvn-spring-boot</artifactId>
     <version>1.0</version>
 
@@ -23,7 +23,7 @@
     <properties>
         <java.version>1.8</java.version>
     </properties>
-	
+
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -41,8 +41,8 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
             </plugin>
-            
-            
+
+
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jar-plugin</artifactId>
@@ -52,14 +52,14 @@
                         <manifest>
                             <addClasspath>true</addClasspath>
                             <classpathPrefix>lib/</classpathPrefix>
-                            <mainClass>pt.uc.dei.bd2021.RestServiceApplication</mainClass>
+                            <mainClass>pt.uc.dei.bd2022.RestServiceApplication</mainClass>
                         </manifest>
                     </archive>
                     <outputDirectory>${basedir}/bin</outputDirectory>
                 </configuration>
             </plugin>
-            
-            
+
+
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-dependency-plugin</artifactId>
@@ -80,8 +80,8 @@
                     </execution>
                 </executions>
             </plugin>
-            
-            
+
+
         </plugins>
     </build>
 </project>

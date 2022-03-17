@@ -1,10 +1,10 @@
-# 
-# Bases de Dados 2020/2021
+#
+# Bases de Dados 2021/2022
 # Trabalho Prático
 #
-# Authors: 
+# Authors:
 #   Nuno Antunes <nmsa@dei.uc.pt>
-#   BD 2021 Team - https://dei.uc.pt/lei/
+#   BD 2022 Team - https://dei.uc.pt/lei/
 #   University of Coimbra
 
 from python:3.9-alpine
@@ -15,13 +15,13 @@ run pip install flask
 
 run pip install psycopg2-binary
 
-copy . /app
+#copy . /app
 
-volume ["/app"]
+#volume ["/app"]
 
 workdir /app
 
-run mkdir -p logs
+# run mkdir -p logs
 
 EXPOSE 5000
 
