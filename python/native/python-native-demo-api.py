@@ -264,4 +264,4 @@ if __name__ == '__main__':
     host = '127.0.0.1'
     port = 8080
     app.run(host=host, debug=True, threaded=True, port=port)
-    logger.info(f'API v1.0 online: http://{host}:{port}')
+    logger.info(f'API v1.1 online: http://{host}:{port}')

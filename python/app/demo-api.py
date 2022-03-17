@@ -270,7 +270,7 @@ if __name__ == "__main__":
     time.sleep(1) # just to let the DB start before this print :-)
 
     logger.info("\n---------------------------------------------------------------\n" + 
-                  "API v1.0 online: http://localhost:8080/departments/\n\n")
+                  "API v1.1 online: http://localhost:8080/departments/\n\n")
 
     app.run(host="0.0.0.0", debug=True, threaded=True)
 

@@ -15,13 +15,13 @@ run pip install flask
 
 run pip install psycopg2-binary
 
-copy . /app
+#copy . /app
 
-volume ["/app"]
+#volume ["/app"]
 
 workdir /app
 
-run mkdir -p logs
+# run mkdir -p logs
 
 EXPOSE 5000
 
