@@ -31,7 +31,7 @@ To execute this project it is required to have installed:
 ## Demo [Python](python) REST API
 
 
-To start this demo with run the script (e.g. [`./docker-compose-python-psql.sh`](docker-compose-python-psql.sh)) to have both the server and the database running.
+To start this demo with run the script (e.g. [`sh docker-compose-python-psql.sh`](docker-compose-python-psql.sh)) to have both the server and the database running.
 This script uses `docker-compose` and follows the configurations available in [`docker-compose-python-psql.yml`](docker-compose-python-psql.yml)).
 
 The folder [`app`](python/app) is mapped into the container.
@@ -43,7 +43,7 @@ You can modify the contents and the server will update the sources without requi
 
 ## Demo [Java](java) REST API
 
-To start this demo with run the script (e.g. [`./docker-compose-java-psql.sh`](docker-compose-java-psql.sh)) to have both the server and the database running.
+To start this demo with run the script (e.g. [`sh docker-compose-java-psql.sh`](docker-compose-java-psql.sh)) to have both the server and the database running.
 
 The demo available here uses [Spring Boot](https://spring.io/projects/spring-boot), which is one of the most widely used solutions to develop REST APIs and micro-services.
 *"Spring Boot makes it easy to create stand-alone, production-grade Spring based Applications that you can "just run."*
