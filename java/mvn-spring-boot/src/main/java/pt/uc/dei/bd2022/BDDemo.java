@@ -48,16 +48,16 @@ public class BDDemo {
         private final String description; 
         private final int code; 
         
-        StatusCode(String description, int code) {
+        private StatusCode(String description, int code) {
             this.description = description;
             this.code = code;
         }
         
-        private String description() { 
+        public String description() { 
             return description; 
         }
 
-        private int code() { 
+        public int code() { 
             return code; 
         }
     }
